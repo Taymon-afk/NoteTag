@@ -1,16 +1,31 @@
-# React + Vite
+# NoteTag
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Рабочий клиентский прототип приложения для заметок по отчёту «Первый_отчет_СПО (2).docx». Построен на React, Vite и React Router.
 
-Currently, two official plugins are available:
+## Запуск
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Проверка сборки и кода:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm run build
+npm run lint
+```
 
-## Expanding the Oxlint configuration
+## Что работает
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- Регистрация и вход по логину и паролю, выход, разделение клиентских и административных маршрутов.
+- Создание, редактирование, удаление и поиск заметок; фильтрация по тегу и сортировка.
+- Создание и удаление тегов, прикрепление и открепление тегов от заметки.
+- Панель администратора со списком пользователей и сводной статистикой без просмотра содержимого заметок.
+- Адаптивная версия для телефона и планшета.
+
+Для быстрой проверки на экране входа есть кнопки **Клиент** и **Администратор**. Демо-логины: `ivanov / demo1234`, `admin / admin1234`.
+
+## Хранение данных
+
+В этой папке нет сервера, поэтому прототип хранит пользователей, заметки и теги в `localStorage`, а текущий вход — в `sessionStorage`. Для новых аккаунтов пароль сохраняется в виде PBKDF2-хеша с солью. Демо-пароли заданы в клиентском коде. Это позволяет проверить весь интерфейс без backend, но не обеспечивает серверную защиту данных и не заменяет REST API, PostgreSQL, JWT и резервное копирование из отчёта. Перед публикацией как полноценного сервиса нужно подключить backend и перенести аутентификацию и разграничение доступа на сервер.
