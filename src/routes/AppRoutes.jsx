@@ -11,17 +11,23 @@ function Home() {
 }
 
 function ClientRoute({ children }) {
-  const { user } = useApp();
+  const { user, loading, loadError, refresh } = useApp();
   if (!user) return <Navigate to="/login" replace />;
   if (user.role === 'admin') return <Navigate to="/admin" replace />;
+  if (loading || loadError) return <DataGate loading={loading} error={loadError} retry={refresh} />;
   return children;
 }
 
 function AdminRoute({ children }) {
-  const { user } = useApp();
+  const { user, loading, loadError, refresh } = useApp();
   if (!user) return <Navigate to="/login" replace />;
   if (user.role !== 'admin') return <Navigate to="/notes" replace />;
+  if (loading || loadError) return <DataGate loading={loading} error={loadError} retry={refresh} />;
   return children;
+}
+
+function DataGate({ loading, error, retry }) {
+  return <main className="data-gate"><div className="data-gate-card"><span className="data-gate-mark">N.</span><h1>{loading ? 'Загружаем NoteTag…' : 'Не удалось загрузить данные'}</h1>{error && <><p>{error}</p><button className="button button-primary" type="button" onClick={() => retry().catch(() => {})}>Повторить</button></>}</div></main>;
 }
 
 function GuestRoute({ children }) {

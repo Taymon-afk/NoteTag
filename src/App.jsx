@@ -1,6 +1,9 @@
 import AppRoutes from './routes/AppRoutes';
-import { AppProvider } from './state/AppContext';
+import { ApiAppProvider } from './state/ApiAppProvider';
+import { AppProvider as DemoAppProvider } from './state/AppContext';
+
+const Provider = import.meta.env.VITE_DEMO_MODE === 'true' ? DemoAppProvider : ApiAppProvider;
 
 export default function App() {
-  return <AppProvider><AppRoutes /></AppProvider>;
+  return <Provider><AppRoutes /></Provider>;
 }

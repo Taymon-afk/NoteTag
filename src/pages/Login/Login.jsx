@@ -6,7 +6,7 @@ import { useApp } from '../../state/useApp';
 
 export default function Login({ mode }) {
   const isRegister = mode === 'register';
-  const { login, register } = useApp();
+  const { login, register, mode: dataMode } = useApp();
   const navigate = useNavigate();
   const [loginName, setLoginName] = useState('');
   const [password, setPassword] = useState('');
@@ -31,7 +31,10 @@ export default function Login({ mode }) {
     setError('');
     setPending(true);
     try {
-      const account = await login(role === 'admin' ? 'admin' : 'ivanov', role === 'admin' ? 'admin1234' : 'demo1234');
+      const credentials = dataMode === 'api'
+        ? role === 'admin' ? ['demo_admin', 'admin123'] : ['demo_andrey', 'password123']
+        : role === 'admin' ? ['admin', 'admin1234'] : ['ivanov', 'demo1234'];
+      const account = await login(...credentials);
       navigate(account.role === 'admin' ? '/admin' : '/notes', { replace: true });
     } catch (err) { setError(err.message || 'Не удалось открыть демо'); }
     finally { setPending(false); }
@@ -70,7 +73,7 @@ export default function Login({ mode }) {
 
         <p className="auth-switch">{isRegister ? 'Уже есть аккаунт?' : 'Нет аккаунта?'} <Link to={isRegister ? '/login' : '/register'}>{isRegister ? 'Войти' : 'Зарегистрироваться'}</Link></p>
 
-        <div className="demo-access"><span>ИЛИ ПОПРОБУЙТЕ ДЕМО</span><div><button type="button" onClick={() => openDemo('client')} disabled={pending}>Клиент</button><button type="button" onClick={() => openDemo('admin')} disabled={pending}>Администратор</button></div></div>
+        {(import.meta.env.DEV || dataMode === 'demo') && <div className="demo-access"><span>ИЛИ ПОПРОБУЙТЕ ДЕМО</span><div><button type="button" onClick={() => openDemo('client')} disabled={pending}>Клиент</button><button type="button" onClick={() => openDemo('admin')} disabled={pending}>Администратор</button></div></div>}
       </div>
       <p className="auth-footnote">NoteTag · Всё важное на виду</p>
     </section>

@@ -123,6 +123,6 @@ export function AppProvider({ children }) {
     }));
   }
 
-  const value = { data, user, login, register, logout, createNote, updateNote, deleteNote, createTag, deleteTag };
+  const value = { mode: 'demo', data, user, loading: false, loadError: '', login, register, logout, createNote, updateNote, deleteNote, createTag, deleteTag };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
